@@ -1,5 +1,5 @@
 import requests
-# from bs4 import BeautifulSoup
+from parsel import Selector
 from time import sleep
 
 
@@ -17,13 +17,19 @@ def fetch(url):
         return None
 
 
-fetch('https://blog.betrybe.com/')
-
-
 # Requisito 2
 def scrape_updates(html_content):
-    """Seu código deve vir aqui"""
-    raise NotImplementedError
+    if html_content:
+        selector = Selector(text=html_content)
+        hrefs = selector.css('.cs-overlay-link').xpath('@href').getall()
+        return hrefs
+    else:
+        return []
+
+
+# test = scrape_updates(fetch('https://blog.betrybe.com/'))
+# print(test)
+# print(len(test))
 
 
 # Requisito 3
