@@ -4,7 +4,7 @@ from time import sleep
 
 
 # Requisito 1
-def fetch(url):
+def fetch(url: str) -> str | None:
     sleep(1)
     try:
         site = requests.get(url, timeout=3,
@@ -18,20 +18,24 @@ def fetch(url):
 
 
 # Requisito 2
-def scrape_updates(html_content):
+def scrape_updates(html_content: str) -> list[str]:
     if html_content:
         selector = Selector(text=html_content)
-        hrefs = selector.css('.cs-overlay-link').xpath('@href').getall()
+        hrefs = selector.css('.cs-overlay-link::attr(href)').getall()
+        # hrefs = selector.css('.cs-overlay-link').xpath('@href').getall()
         return hrefs
     else:
         return []
 
 
 # Requisito 3
-def scrape_next_page_link(html_content):
+def scrape_next_page_link(html_content: str) -> str | None:
     selector = Selector(text=html_content)
-    next_page = selector.css('.next').xpath('@href').get()
-    return next_page
+    next_page = selector.css('.next::attr(href)').get()
+    # next_page = selector.css('.next').xpath('@href').get()
+    if next_page:
+        return next_page
+    return None
 
 
 def formated_url(selector: Selector) -> str:
@@ -86,8 +90,8 @@ def formated_category(selector: Selector) -> str:
 
 
 # Requisito 4
-def scrape_news(html_content):
-    tech_new = {}
+def scrape_news(html_content: str) -> dict[str, str | int]:
+    tech_new: dict[str, str | int] = {}
     selector = Selector(text=html_content)
     tech_new['url'] = formated_url(selector)
     tech_new['title'] = formated_title(selector)
@@ -100,6 +104,6 @@ def scrape_news(html_content):
 
 
 # Requisito 5
-def get_tech_news(amount):
+def get_tech_news(amount: int):
     """Seu código deve vir aqui"""
     raise NotImplementedError
