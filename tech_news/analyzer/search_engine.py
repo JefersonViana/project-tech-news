@@ -49,12 +49,18 @@ def search_by_date(date):
     return result
 
 
-# test = search_by_date('21-12-1980')
-# print(test)
-# print(len(test))
-
-
 # Requisito 9
 def search_by_category(category):
-    """Seu código deve vir aqui"""
-    raise NotImplementedError
+    result = [
+        (new['title'], new['url'])
+        for new in search_news(
+            {'category': {'$regex': category, '$options': 'i'}}
+        )
+    ]
+    return result
+
+
+# ["Ferramentas", "FERRAMENTAS", "Novidades", "Aloha"]
+# test = search_by_category('Aloha')
+# print(test)
+# print(len(test))
